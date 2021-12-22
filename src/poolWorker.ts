@@ -34,6 +34,17 @@ export class PoolWorker extends Worker {
 
       this.once('message', onMessage);
       this.once('error', onError);
+      this.once('exit', (exitCode) => {
+        setImmediate(() => {
+          this.removeAllListeners();
+        });
+
+        if (exitCode !== 0) {
+          const err = new Error("process in worker thread exited");
+          err.code = exitCode;
+          onError(err);
+        }
+      });
       this.postMessage(param, transferList);
     });
 
@@ -46,12 +57,6 @@ export class PoolWorker extends Worker {
   }
 
   override async terminate(): Promise<number> {
-    this.once('exit', () => {
-      setImmediate(() => {
-        this.removeAllListeners();
-      });
-    });
-
     return super.terminate();
   }
 }
