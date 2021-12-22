@@ -40,8 +40,7 @@ export class PoolWorker extends Worker {
         });
 
         if (exitCode !== 0) {
-          const err = new Error("process in worker thread exited");
-          err.code = exitCode;
+          const err = new Error("process in worker thread exited badly");
           onError(err);
         }
       });
