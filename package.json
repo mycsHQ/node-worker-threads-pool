@@ -10,8 +10,7 @@
     "prepare": "husky install",
     "build": "tsc",
     "test": "jest --coverage",
-    "pretest": "yarn build",
-    "postinstall": "yarn build"
+    "pretest": "yarn build"
   },
   "repository": {
     "type": "git",
